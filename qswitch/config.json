@@ -1,0 +1,11 @@
+{
+  "flavours": ["ii", "xenon", "caelestia", "dms"],
+  "keybinds": {
+    "caelestia": "caelestia.lua",
+    "ii": "ii.lua",
+    "xenon": "xenon.lua",
+    "dms": "dms.lua"
+  },
+  "unbinds": true,
+  "panel_keybind": "SUPER + ALT + V"
+}
