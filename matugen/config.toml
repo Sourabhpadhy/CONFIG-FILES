@@ -1,0 +1,63 @@
+[config]
+version_check = false
+
+[templates.m3colors]
+input_path = '~/.config/matugen/templates/colors.json'
+output_path = '~/.local/state/quickshell/user/generated/colors.json'
+
+[templates.hyprland]
+input_path = '~/.config/matugen/templates/hyprland/colors.conf'
+output_path = '~/.config/hypr/hyprland/colors.conf'
+#post_hook = 'hyprctl reload'
+
+#[templates.hyprlock]
+#input_path = '~/.config/matugen/templates/hyprland/hyprlock-colors.conf'
+#output_path = '~/.config/hypr/hyprlock/colors.conf'
+
+[templates.fuzzel]
+input_path = '~/.config/matugen/templates/fuzzel/fuzzel_theme.ini'
+output_path = '~/.config/fuzzel/fuzzel_theme.ini'
+
+[templates.gtk3]
+input_path = '~/.config/matugen/templates/gtk-3.0/gtk.css'
+output_path = '~/.config/gtk-3.0/gtk.css'
+#post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme "Temp" && gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"'
+
+[templates.gtk4]
+input_path = '~/.config/matugen/templates/gtk-4.0/gtk.css'
+output_path = '~/.config/gtk-4.0/gtk.css'
+#post_hook = 'gsettings set org.gnome.desktop.interface gtk-theme "Temp" && gsettings set org.gnome.desktop.interface gtk-theme "adw-gtk3-dark"'
+
+[templates.kde_colors]
+input_path = '~/.config/matugen/templates/kde/color.txt'
+output_path = '~/.local/state/quickshell/user/generated/color.txt'
+
+[templates.wallpaper]
+input_path = '~/.config/matugen/templates/wallpaper.txt'
+output_path = '~/.local/state/quickshell/user/generated/wallpaper/path.txt'
+
+[templates.discord]
+input_path = '~/.config/matugen/templates/discord/midnight-discord.css'
+output_path = '~/.config/Vencord/themes/matugen.css'
+
+[templates.antigravity]
+input_path = '~/.config/matugen/templates/antigravity/dankshell.json'
+output_path = '~/.antigravity/extensions/matugen-theme/themes/matugen-color-theme.json'
+
+[templates.vscode]
+input_path = '~/.config/matugen/templates/vscode/dankshell.json'
+output_path = '~/.config/Code/User/globalStorage/matugen.theme/colors.json'
+
+[templates.nighttab]
+input_path = '~/.config/matugen/templates/nighttab/nighttab.json'
+output_path = '~/.local/share/nighttab-matugen.json'
+#post_hook = '/usr/bin/hyprctl dispatch focuswindow google-chrome && wtype -k F5'
+
+[templates.kitty]
+input_path = '~/.config/matugen/templates/kitty/kitty-colors.conf'
+output_path = '~/.config/kitty/matugen-colors.conf'
+#post_hook = 'killall -SIGUSR1 kitty'
+
+[templates.btop]
+input_path = '~/.config/matugen/templates/btop/btop.theme'
+output_path = '~/.config/btop/themes/matugen.theme'

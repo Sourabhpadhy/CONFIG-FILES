@@ -1,0 +1,7 @@
+{
+     "components": {
+       "bar": {
+         "enabled": false
+       },
+       "lockscreen": false,
+       "appLauncher
