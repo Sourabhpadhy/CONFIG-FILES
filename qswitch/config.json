@@ -1,9 +1,10 @@
 {
-  "flavours": ["ii", "xenon", "caelestia", "dms"],
+  "flavours": ["ii", "xenon", "skwd" , "caelestia", "dms"],
   "keybinds": {
     "caelestia": "caelestia.lua",
     "ii": "ii.lua",
     "xenon": "xenon.lua",
+    "skwd": "skwd.lua", 
     "dms": "dms.lua"
   },
   "unbinds": true,
