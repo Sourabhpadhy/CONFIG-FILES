@@ -58,7 +58,7 @@ output_path = '~/.config/Code/User/settings.json'
 
 [templates.nighttab]
 input_path = '~/.config/matugen/templates/nighttab.json'
-output_path = '/path/to/your/extension-source/colors.json'
+output_path = '~/matugen-themes/nighttab/extension-source/colors.json'
 #post_hook = '/usr/bin/hyprctl dispatch focuswindow google-chrome && wtype -k F5'
 
 [templates.kitty]
