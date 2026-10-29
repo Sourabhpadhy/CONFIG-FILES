@@ -1,5 +1,5 @@
 -- #######################################################################################
--- HYPRLAND LUA CONFIGURATION (OPTIMIZED & FULL SYSTEM)
+-- HYPRLAND LUA CONFIGURATION (OPTIMIZED & DEDUPLICATED)
 -- #######################################################################################
 
 -- Resolve user home directory safely for paths
@@ -47,16 +47,16 @@ hl.on("hyprland.start", function()
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
 	hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
 
-	-- Core background utilities and daemons (expanded home path prevents shell expansion errors)
+	-- Core background utilities and daemons
 	hl.exec_cmd(home .. "/.local/bin/matugen-watch.sh")
 	hl.exec_cmd("nm-applet --indicator")
 	hl.exec_cmd("blueman-applet")
 	hl.exec_cmd("wl-paste --type text --watch cliphist store")
 	hl.exec_cmd("wl-paste --type image --watch cliphist store")
-	
+
 	-- Polkit authentication agent
 	hl.exec_cmd("/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1")
-	
+
 	-- Wallpaper daemon and Quickshell overview component
 	hl.exec_cmd("skwd-daemon")
 	hl.exec_cmd("qs -c " .. home .. "/.config/quickshell/overview")
@@ -76,7 +76,7 @@ hl.config({
 		},
 		resize_on_border = false,
 		allow_tearing = false,
-		layout = "scrolling", -- Default layout on launch
+		layout = "scrolling",
 	},
 })
 
@@ -152,9 +152,9 @@ hl.config({
 	},
 	master = {
 		new_status = "master",
-		orientation = "center",              -- Centers master window with slave columns on both sides
-		slave_count_for_center_master = 2,  -- Balances slave windows equally when 2 or more exist
-		mfact = 0.50,                       -- 50% screen width allocated to the center master window
+		orientation = "center",
+		slave_count_for_center_master = 2,
+		mfact = 0.50,
 	},
 })
 
@@ -193,50 +193,49 @@ hl.device({ name = "epic-mouse-v1", sensitivity = -0.5 })
 hl.bind("mouse:276", hl.dsp.exec_cmd("wtype -M ctrl c -m ctrl"))
 hl.bind("mouse:275", hl.dsp.exec_cmd("wtype -M ctrl v -m ctrl"))
 
--- --- SCREENSHOTS ---
-hl.bind("SUPER + S", hl.dsp.exec_cmd('bash -c \'grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%s).png\''))
-hl.bind("SUPER + mouse:275", hl.dsp.exec_cmd('bash -c \'grim -g "$(slurp)" - | wl-copy\''))
-hl.bind("Print", hl.dsp.exec_cmd('bash -c \'grim ~/Pictures/screenshot_$(date +%s).png\''))
-hl.bind("SHIFT + Print", hl.dsp.exec_cmd('bash -c \'grim - | wl-copy\''))
+-- --- GLOBAL SCREENSHOTS ---
+hl.bind("SUPER + S", hl.dsp.exec_cmd('bash -c \'grim -g "$(slurp)" ~/Pictures/screenshot_$(date +%s).png\''), { description = "Select region and save to file" })
+hl.bind("SUPER + mouse:275", hl.dsp.exec_cmd('bash -c \'grim -g "$(slurp)" - | wl-copy\''), { description = "Select region directly to clipboard" })
+hl.bind("Print", hl.dsp.exec_cmd('bash -c \'grim ~/Pictures/screenshot_$(date +%s).png\''), { description = "Fullscreen screenshot to file" })
+hl.bind("SHIFT + Print", hl.dsp.exec_cmd('bash -c \'grim - | wl-copy\''), { description = "Fullscreen screenshot to clipboard" })
 
 -- --- WINDOW GROUPING ---
 hl.bind(mainMod .. " + Tab", hl.dsp.group.next())
 hl.bind(mainMod .. " + SHIFT + Tab", hl.dsp.group.prev())
 
 -- --- CORE SYSTEM CONTROLS ---
-hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal))
-hl.bind(mainMod .. " + C", hl.dsp.window.close())
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
-hl.bind(mainMod .. " + V", hl.dsp.window.float())
+hl.bind(mainMod .. " + Q", hl.dsp.exec_cmd(terminal), { description = "Launch terminal" })
+hl.bind(mainMod .. " + C", hl.dsp.window.close(), { description = "Close active window" })
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager), { description = "Open file manager" })
+hl.bind(mainMod .. " + V", hl.dsp.window.float(), { description = "Toggle window floating state" })
 
--- --- SHELL, OVERVIEW & WALLPAPER ---
+-- --- PERSISTENT GLOBAL SHELL & WALLPAPER ---
 hl.bind("SUPER + A", hl.dsp.exec_cmd("qs ipc -c " .. home .. "/.config/quickshell/overview call overview toggle"), {
 	description = "Toggle Quickshell Overview",
 })
 hl.bind(mainMod .. " + W", function()
 	hl.exec_cmd("skwd wall toggle")
-end)
+end, { description = "Toggle wallpaper via skwd" })
 
--- --- FALLBACK BINDS ---
-hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit"))
-hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"))
-hl.bind(mainMod .. " + I", hl.dsp.exec_cmd("XDG_CURRENT_DESKTOP=GNOME gnome-control-center"))
-hl.bind(mainMod .. " + SHIFT + V", hl.dsp.exec_cmd("cliphist list | wofi -dmenu | cliphist decode | wl-copy"))
+-- --- GLOBAL FALLBACK BINDS (Non-Duplicated) ---
+hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu), { description = "Application launcher fallback" })
+hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch exit"), { description = "Session exit fallback" })
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("hyprlock"), { description = "Lock screen fallback" })
+hl.bind(mainMod .. " + I", hl.dsp.exec_cmd("XDG_CURRENT_DESKTOP=GNOME gnome-control-center"), { description = "System settings fallback" })
+hl.bind(mainMod .. " + SHIFT + D", hl.dsp.exec_cmd("cliphist list | wofi -dmenu | cliphist decode | wl-copy"), { description = "Clipboard manager fallback" })
 
--- --- GLOBAL LAYOUT SWITCHERS (In-memory Lua switches, no subshell overhead) ---
+-- --- GLOBAL LAYOUT SWITCHERS ---
 hl.bind(mainMod .. " + CTRL + D", function()
 	hl.config({ general = { layout = "dwindle" } })
-end)
+end, { description = "Switch layout engine to dwindle" })
 
 hl.bind(mainMod .. " + CTRL + S", function()
 	hl.config({ general = { layout = "scrolling" } })
-end)
+end, { description = "Switch layout engine to scrolling" })
 
 hl.bind(mainMod .. " + CTRL + M", function()
 	hl.config({ general = { layout = "master" } })
-end)
+end, { description = "Switch layout engine to master" })
 
 -- Scrolling layout directions
 hl.bind(mainMod .. " + CTRL + H", function()
@@ -247,18 +246,15 @@ hl.bind(mainMod .. " + CTRL + V", function()
 	hl.config({ scrolling = { direction = "down" } })
 end)
 
--- --- MASTER LAYOUT CONTROLS (Only a-z and arrow keys) ---
--- Switch between orientations shown in the video
-hl.bind(mainMod .. " + CTRL + C", hl.dsp.layout("orientationcenter")) -- Center master (3-column layout)
-hl.bind(mainMod .. " + CTRL + Up", hl.dsp.layout("orientationtop"))    -- Master on top, slaves arranged below
-hl.bind(mainMod .. " + CTRL + Left", hl.dsp.layout("orientationleft"))  -- Master on left, slaves arranged right
-hl.bind(mainMod .. " + CTRL + Right", hl.dsp.layout("orientationright"))-- Master on right, slaves arranged left
-hl.bind(mainMod .. " + CTRL + Down", hl.dsp.layout("orientationbottom"))-- Master on bottom, slaves arranged top
-
--- Master window operations (Clean alphabetical keys)
-hl.bind(mainMod .. " + CTRL + X", hl.dsp.layout("swapwithmaster master")) -- Swap active window with master
-hl.bind(mainMod .. " + CTRL + Z", hl.dsp.layout("addmaster"))              -- Increase master window count
-hl.bind(mainMod .. " + CTRL + Y", hl.dsp.layout("removemaster"))           -- Decrease master window count
+-- --- MASTER LAYOUT CONTROLS ---
+hl.bind(mainMod .. " + CTRL + C", hl.dsp.layout("orientationcenter"))
+hl.bind(mainMod .. " + CTRL + Up", hl.dsp.layout("orientationtop"))
+hl.bind(mainMod .. " + CTRL + Left", hl.dsp.layout("orientationleft"))
+hl.bind(mainMod .. " + CTRL + Right", hl.dsp.layout("orientationright"))
+hl.bind(mainMod .. " + CTRL + Down", hl.dsp.layout("orientationbottom"))
+hl.bind(mainMod .. " + CTRL + X", hl.dsp.layout("swapwithmaster master"))
+hl.bind(mainMod .. " + CTRL + Z", hl.dsp.layout("addmaster"))
+hl.bind(mainMod .. " + CTRL + Y", hl.dsp.layout("removemaster"))
 
 -- --- SCROLLING LAYOUT CONTROLS ---
 hl.bind(mainMod .. " + CTRL + period", hl.dsp.layout("move +col"))
@@ -331,9 +327,8 @@ hl.window_rule({
 })
 
 -----------------------------------------------------------------------------------------
--- SAFE EXTERNAL FILE LOADER (QSwitch & Theme Integration)
+-- SAFE EXTERNAL FILE LOADER (QSwitch & Dynamic Matugen Theme)
 -----------------------------------------------------------------------------------------
--- Prevents Hyprland crashes if dynamic cache or theme files do not exist yet
 local function safe_load(relative_or_full_path)
 	local full_path = relative_or_full_path:sub(1, 1) == "/" and relative_or_full_path or (home .. "/" .. relative_or_full_path)
 	local f = io.open(full_path, "r")
@@ -346,9 +341,8 @@ local function safe_load(relative_or_full_path)
 	end
 end
 
--- End-4 / Illogical Impulse rules & Matugen dynamic colors
+-- Matugen dynamic color palettes
 safe_load(".config/hypr/hyprland/colors.lua")
-safe_load(".config/hypr/hyprland/ii-rules.lua")
 
--- QSwitch shell switch bindings (safe single load)
+-- QSwitch dynamic profile loader (points to active shell in .cache/qswitch/qswitch.lua)
 safe_load(".cache/qswitch/qswitch.lua")
